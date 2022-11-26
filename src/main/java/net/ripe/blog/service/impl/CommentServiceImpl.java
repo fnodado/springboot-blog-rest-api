@@ -64,11 +64,11 @@ public class CommentServiceImpl implements CommentService {
 
         if (!comment.getPost().getId().equals(post.getId())) {
             throw new BlogApiException(HttpStatus.BAD_REQUEST, "Comment does not belong to a post");
-        } else {
-            comment.setBody(updatedComment.getBody());
-            comment.setName(updatedComment.getName());
-            comment.setEmail(updatedComment.getEmail());
         }
+        comment.setBody(updatedComment.getBody());
+        comment.setName(updatedComment.getName());
+        comment.setEmail(updatedComment.getEmail());
+
         return CommentMapper.mapToDto(commentRepository.save(comment));
     }
 
