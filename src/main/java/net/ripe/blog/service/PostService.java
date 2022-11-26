@@ -1,13 +1,14 @@
 package net.ripe.blog.service;
 
 import net.ripe.blog.payload.PostDto;
+import net.ripe.blog.payload.PostResponse;
 
 import java.util.List;
 
 public interface PostService {
     PostDto createPost(PostDto postDto);
 
-    List<PostDto> getAllPost();
+    PostResponse getAllPost(int pageNo, int pageSize, String sortBy, String sortDir);
 
     PostDto getPostById(Long id);
 

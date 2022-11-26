@@ -5,9 +5,15 @@ import net.ripe.blog.entity.Post;
 import net.ripe.blog.exception.ResourceNotFoundException;
 import net.ripe.blog.mapper.PostMapper;
 import net.ripe.blog.payload.PostDto;
+import net.ripe.blog.payload.PostResponse;
 import net.ripe.blog.repository.PostRepository;
 import net.ripe.blog.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,8 +30,32 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPost() {
-        return postRepository.findAll().stream().map(PostMapper::mapToDto).collect(Collectors.toList());
+    public PostResponse getAllPost(int pageNo, int pageSize, String sortBy, String sortDir) {
+
+        //create logic for sorting
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        System.out.println(sort);
+
+        //create pageable instance
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+        Page<Post> posts = postRepository.findAll(pageable);
+
+        //get content for page object
+        List<Post> listOfPosts = posts.getContent();
+        List<PostDto> content = listOfPosts.stream().map(PostMapper::mapToDto).collect(Collectors.toList());
+
+        //create PostResponse object
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(content);
+        postResponse.setPageNo(posts.getNumber());
+        postResponse.setPageSize(posts.getSize());
+        postResponse.setTotalElements(posts.getTotalElements());
+        postResponse.setTotalPages(posts.getTotalPages());
+        postResponse.setLast(posts.isLast());
+
+        return postResponse;
     }
 
     @Override
