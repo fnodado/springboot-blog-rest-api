@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,4 +28,10 @@ public class Post {
 
     @Column(name="content", nullable = false)
     private String content;
+
+    //List allows duplicates
+    //Set doesn't allow duplicates
+    // cascade <-> child relationship if CRUD is trigered. e.g if post is deleted, along with that comment is also delete
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private Set<Comment> comments = new HashSet<>();
 }
