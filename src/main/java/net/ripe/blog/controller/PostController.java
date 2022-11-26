@@ -1,5 +1,8 @@
 package net.ripe.blog.controller;
 
+
+
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import net.ripe.blog.payload.PostDto;
 import net.ripe.blog.payload.PostResponse;
@@ -17,7 +20,7 @@ public class PostController {
     private PostService postService;
 
     @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
@@ -35,7 +38,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto updatedPost, @PathVariable("id") Long id) {
+    public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto updatedPost, @PathVariable("id") Long id) {
         return new ResponseEntity<>(postService.updatePost(updatedPost, id), HttpStatus.OK);
     }
 
