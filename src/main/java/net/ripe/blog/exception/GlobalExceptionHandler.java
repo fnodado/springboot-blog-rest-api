@@ -24,13 +24,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(NullPointerException ex,
+    @ExceptionHandler(BlogApiException.class)
+    public ResponseEntity<ErrorDetails> handleResourceNotFoundException(BlogApiException ex,
                                                                         WebRequest webRequest){
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
                 webRequest.getDescription(false));
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
 
