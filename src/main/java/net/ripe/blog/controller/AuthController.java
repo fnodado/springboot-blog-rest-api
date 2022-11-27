@@ -2,10 +2,12 @@ package net.ripe.blog.controller;
 
 import net.ripe.blog.entity.Role;
 import net.ripe.blog.entity.User;
+import net.ripe.blog.payload.JWTAuthResponse;
 import net.ripe.blog.payload.LoginDto;
 import net.ripe.blog.payload.SignUpDto;
 import net.ripe.blog.repository.RoleRepository;
 import net.ripe.blog.repository.UserRepository;
+import net.ripe.blog.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,15 +39,20 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/signin")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto){
+    public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsernameOrEmail(),
                 loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+        //get token from tokenProvider
+        String token = jwtTokenProvider.generateToken(authentication);
+
+        return ResponseEntity.ok(new JWTAuthResponse(token));
     }
 
     @PostMapping("/signup")
