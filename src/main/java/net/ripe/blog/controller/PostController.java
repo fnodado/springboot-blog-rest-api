@@ -27,7 +27,6 @@ public class PostController {
     }
 
     //check roles
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<PostResponse> getAllPost(@RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
                                                    @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
