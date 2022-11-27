@@ -42,6 +42,7 @@ public class SecurityConfig  {
                 .sessionManagement()
                 .and()
                 .authorizeHttpRequests()
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
                 .and().formLogin()
@@ -75,6 +76,7 @@ public class SecurityConfig  {
 //
 //        return new InMemoryUserDetailsManager(francis, admin);
 //    }
+
 
 
 
