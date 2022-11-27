@@ -20,12 +20,14 @@ public class PostController {
 
     private PostService postService;
 
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
+    //check roles
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<PostResponse> getAllPost(@RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
                                                    @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
@@ -39,13 +41,13 @@ public class PostController {
         return new ResponseEntity<>(postService.getPostById(id), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto updatedPost, @PathVariable("id") Long id) {
         return new ResponseEntity<>(postService.updatePost(updatedPost, id), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePost(@PathVariable("id") Long id) {
         postService.deletePostById(id);
