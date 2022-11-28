@@ -1,0 +1,20 @@
+Versioning REST APIs
+
+Why we need to version rest api
+1. If there are major changes in rest api, we need not to change the current but create another version
+
+Ways to version rest api
+1. Versioning through uri path example: api/v2/posts
+2. through query parameters: api/posts?version=2 add @GetMapping(valud="/api/posts", params = "version2")
+3. custom headers
+    doesn't clutter the uri but requires custom header
+    add @GetMapping(value="/api/posts", headers = "X-API-VERSION=2")
+4. content negotiations
+    add @GetMapping(value="/api/posts", produces = "application/vnd.ripe.v2+json")
+    add header : key: Accept value: application/vnd.ripe.v2.json
+
+When to version rest api
+1. when changing request/response format (e.g xml to json vice versa)
+2. changing property name (e.g from name to productName) or data type on a property(e.g from integer to a float)
+3. adding a required field on the rquest or validation
+4. removing a property on the response
