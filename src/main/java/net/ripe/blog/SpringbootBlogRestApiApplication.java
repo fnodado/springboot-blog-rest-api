@@ -25,6 +25,7 @@ public class SpringbootBlogRestApiApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		//test commit
 		Role adminRole = new Role();
 		adminRole.setName("ROLE_ADMIN");
 		roleRepository.save(adminRole);
